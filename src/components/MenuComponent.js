@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Media } from 'reactstrap';
+import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
 
-class Menu extends Component {
+/*this is at the shared/dishes.js*/
+/*class Menu extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -41,9 +43,10 @@ class Menu extends Component {
                ],
         };
     }
+*/
 
-//will return a view of this component
-    render() {
+/*will return a view of dishes component when coded in this file directly*/
+/*    render() {
         const menu = this.state.dishes.map((dish) => {
             return (
               <div key={dish.id} className="col-12 mt-5">
@@ -68,6 +71,73 @@ class Menu extends Component {
               </Media>
             </div>
           </div>
+        );
+    }
+}*/
+
+class Menu extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            selectedDish: null
+        }
+    }
+
+/*define the method onDishSelect that receives the dish as a parameter*/
+    onDishSelect(dish) {
+        this.setState({ selectedDish: dish});
+    }
+/*Need to use setstate to change the state*/
+
+/*when the dish is selected, I want to render the details of the dish so I going to add a method called renderDish*/
+    renderDish(dish) {
+        if (dish != null)
+            return(
+                <Card>
+                    <CardImg top src={dish.image} alt={dish.name} />
+                    <CardBody>
+                      <CardTitle>{dish.name}</CardTitle>
+                      <CardText>{dish.description}</CardText>
+                    </CardBody>
+                </Card>
+            );
+        else
+            return(
+                <div></div>
+                /*empty div - nothing*/
+            );
+    }
+
+/*will return a view of dishes component when coded in this file directly*/
+    render() {
+        const menu = this.props.dishes.map((dish) => {
+            return (
+                /*For extra-small and small devices , I will show each dish on top of the other. For medium devices and abpove, I wiull show side by side ocupying 5 columns*/
+              <div  className="col-12 col-md-5 m-1">> 
+                <Card key={dish.id}
+                  onClick={() => this.onDishSelect(dish)}>
+                  <CardImg width="100%" src={dish.image} alt={dish.name} />
+                  <CardImgOverlay>
+                      <CardTitle>{dish.name}</CardTitle>
+                  </CardImgOverlay>
+                </Card>
+              </div>
+            );
+        });
+
+        return (
+            <div className="container">
+                <div className="row">
+                    {menu}
+                </div>
+                <div className="row">
+                  <div  className="col-12 col-md-5 m-1">
+                    {this.renderDish(this.state.selectedDish)}
+                  </div>
+                </div>
+            </div>
         );
     }
 }
